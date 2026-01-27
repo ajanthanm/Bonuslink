@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Bonuslink - Booking Confirmed</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#26aae1", // Bonuslink Blue
+                        secondary: "#0077A3", // Darker Bonuslink Blue
+                        "primary-hover": "#1e8bbd",
+                        "primary-light": "#eef9fd",
+                        "text-main": "#1A1A1A",
+                        "text-muted": "#555555",
+                        "bg-surface": "#F5F8FF",
+                        success: "#4CAF50",
+                        amber: "#BC9454", // Keep for accent/stars
+                        gold: "#BC9454",
+                        error: "#EF4444",
+                    },
+                    fontFamily: {
+                        display: ["Poppins", "sans-serif"],
+                        sans: ["Poppins", "sans-serif"],
+                    },
+                    fontSize: {
+                        'xs': '0.92rem',
+                        'sm': '1.0rem',
+                        'base': '1.125rem',
+                        'lg': '1.25rem',
+                        'xl': '1.5rem',
+                        '2xl': '1.75rem',
+                        '3xl': '2.25rem',
+                        '4xl': '2.5rem',
+                    },
+                    boxShadow: {
+                        'refined': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 10px 20px -5px rgba(0, 0, 0, 0.08)',
+                        'refined-lg': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 20px 30px -10px rgba(0, 0, 0, 0.12)',
+                        'refined-xl': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 30px 60px -15px rgba(0, 0, 0, 0.15)',
+                        'blue': '0 4px 14px 0 rgba(38, 170, 225, 0.15)',
+                        'blue-lg': '0 10px 25px -5px rgba(38, 170, 225, 0.25)',
+                        'inner-subtle': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.03)',
+                        'subtle': '0 2px 10px -5px rgba(38, 170, 225, 0.15)',
+                        'float': '0 5px 15px -5px rgba(0, 0, 0, 0.08)',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s ease-out',
+                        'slide-down': 'slideDown 0.3s ease-out',
+                        'scale-in': 'scaleIn 0.3s ease-out',
+                        'highlight-pulse': 'highlightPulse 1s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        highlightPulse: {
+                            '0%': { backgroundColor: 'rgba(38, 170, 225, 0.1)' },
+                            '100%': { backgroundColor: 'transparent' }
+                        }
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .material-icons-round {
+            vertical-align: middle;
+        }
+
+        /* Custom scrollbar matching Bonuslink */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #26aae1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1e8bbd;
+        }
+    </style>
+</head>
+
+<body class="bg-bg-surface font-sans text-text-main antialiased pb-10 text-base">
+    <div class="flex flex-col min-h-screen">
+        <!-- Header (Matched exactly from Bonuslink Search Results) -->
+        <nav class="sticky top-0 z-50 bg-white border-b-2 border-gray-100 shadow-refined relative">
+            <!-- Row 1: Brand & Profile -->
+            <div
+                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex justify-between items-center bg-white relative z-30">
+                <div class="flex items-center gap-4">
+                    <img src="bonuslink_logo.png" alt="Bonuslink" class="h-10 w-auto object-contain">
+                    <div class="h-6 w-px bg-gray-200 hidden sm:block"></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button class="text-xs font-bold text-text-muted hover:text-primary transition-colors">MYR</button>
+
+                    <!-- Logged In User State -->
+                    <div class="flex items-center gap-3 pl-2 sm:border-l sm:border-gray-200 sm:ml-2">
+                        <div class="hidden sm:flex flex-col items-end leading-none">
+                            <span class="text-xs font-bold text-secondary">Hello, Viren</span>
+                            <div class="flex items-center gap-1">
+                                <span class="text-[10px] text-primary font-bold">50,000</span>
+                                <img src="bonuslink_icon.png" class="h-3 w-3 object-contain">
+                            </div>
+                        </div>
+                        <button
+                            class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 shadow-sm">
+                            <span class="material-icons-round text-xl">person</span>
+                        </button>
+                        <!-- Shopping Cart Icon Added for Basket Page -->
+                        <button
+                            class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 shadow-sm relative">
+                            <span class="material-icons-round text-xl">shopping_cart</span>
+                            <span
+                                class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-sm">1</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow">
+            <!-- Confirmation Banner -->
+            <div class="bg-white rounded-xl shadow-float border border-gray-200 p-6 text-center mb-8">
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-14 h-14 bg-success/10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="material-icons-round text-success text-4xl">check_circle</span>
+                        </div>
+                        <div class="text-left">
+                            <h1 class="text-2xl font-semibold text-secondary leading-tight">Your holiday is confirmed!
+                            </h1>
+                            <p class="text-text-muted text-sm leading-tight mt-1">Thank you for booking with Bonuslink.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="hidden md:block w-px h-12 bg-gray-100"></div>
+
+                    <div class="flex items-center gap-3 bg-bg-surface px-6 py-3 rounded-xl border border-gray-200">
+                        <span class="text-xs font-bold uppercase tracking-widest text-text-muted">Booking
+                            Reference</span>
+                        <span class="text-xl font-bold text-primary tracking-wider">BL869420</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-2 space-y-6">
+
+                    <!-- Hotel Booking -->
+                    <div class="bg-white rounded-xl shadow-float border border-gray-200 overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                                    <span class="material-icons-round text-primary text-xl">hotel</span>
+                                </div>
+                                <h2 class="text-xl font-bold text-secondary">Hotel Booking</h2>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <img alt="Cinnamon Dhonveli Maldives"
+                                    class="w-full md:w-48 h-32 object-cover rounded-xl"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0rw0noDZs_ppQdGkbZJm31tiG67K-9kI0-ghQF7lMHDP7l99G-XYQhzGiU_b8bVcnNxTvF_hi6s8X6gyO2Ncjggsf8kYLsBXoubgEimt9iCDh8SUJszXu7xI6sHR7xhoDhj4nGDNX9cZmYOt3UUUE2uR3LGMLWAA7OD-Y5NkTv6yCovS8kAwTRlg9RavDvz8VjmlVgsLmplPlBWeyLQSgH0u4fgvmmT8IA2-WR_Fjmp_k7ew4CXOgDubZ1Wgp4hhcBxqfDCCdpSU" />
+                                <div class="flex-grow">
+                                    <h3 class="font-bold text-lg text-secondary">Cinnamon Dhonveli Maldives</h3>
+                                    <p class="text-sm text-text-muted flex items-center gap-1 mt-1">
+                                        <span class="material-icons-round text-primary text-base">location_on</span>
+                                        Kaafu Atoll, Maldives
+                                    </p>
+
+                                    <div class="mt-4 grid grid-cols-2 gap-y-2 gap-x-8 text-sm">
+                                        <div>
+                                            <span
+                                                class="text-xs text-text-muted uppercase font-bold block">Check-in</span>
+                                            <span class="font-medium text-text-main">Mon, 28 Oct 2024</span>
+                                        </div>
+                                        <div>
+                                            <span
+                                                class="text-xs text-text-muted uppercase font-bold block">Check-out</span>
+                                            <span class="font-medium text-text-main">Fri, 01 Nov 2024</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-xs text-text-muted uppercase font-bold block">Room</span>
+                                            <span class="font-medium text-text-main">Over-Water Suite</span>
+                                        </div>
+                                        <div>
+                                            <span
+                                                class="text-xs text-text-muted uppercase font-bold block">Guests</span>
+                                            <span class="font-medium text-text-main">2 Adults</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tour & Activity -->
+                    <div class="bg-white rounded-xl shadow-float border border-gray-200 overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                                    <span class="material-icons-round text-primary text-xl">surfing</span>
+                                </div>
+                                <h2 class="text-xl font-bold text-secondary">Tour & Activity</h2>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <img alt="Sunset Dolphin Cruise" class="w-full md:w-48 h-32 object-cover rounded-xl"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt-CErogUhh9Za_TQX0H1-1rYTHN2YBWzUlsPCIMo27Rxipd3b2hcBJYHXCjzIjRguljTRPfRElIZjrpgHmXhsFBRSKm5lu_8xDgA_Yxd5ZiPaPWARkdLlJmZje_j6QQHoGzcQsQ6PJv9GNFtLX-vseCyMEZjV6jY4H7opXcFk1S7DDWDgBy1cXXwRgVu5SB6PW_zSmGcsZagAS8iSvkc-OalmZiFdxBLNgbqiUInL3PYQ3eIcWmmhWh75wAEuB5GaFtg5EK1ytMY" />
+                                <div class="flex-grow">
+                                    <h3 class="font-bold text-lg text-secondary">Sunset Dolphin Cruise</h3>
+                                    <div class="mt-4 grid grid-cols-2 gap-y-2 gap-x-8 text-sm">
+                                        <div>
+                                            <span class="text-xs text-text-muted uppercase font-bold block">Date</span>
+                                            <span class="font-medium text-text-main">Tue, 29 Oct 2024</span>
+                                        </div>
+                                        <div>
+                                            <span
+                                                class="text-xs text-text-muted uppercase font-bold block">Duration</span>
+                                            <span class="font-medium text-text-main">2 hours</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <!-- Sidebar -->
+                <div class="lg:col-span-1 space-y-6">
+
+                    <!-- Passenger Details -->
+                    <div class="bg-white rounded-xl shadow-float border border-gray-200 p-6">
+                        <h3 class="font-bold text-lg mb-4 text-secondary">Guest Details</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-text-muted">
+                                    <span class="material-icons-round text-sm">person</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-text-main text-sm">Mr John Smith</p>
+                                    <p class="text-xs text-text-muted">Primary Guest</p>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100"></div>
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-text-muted">
+                                    <span class="material-icons-round text-sm">person</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-text-main text-sm">Ms Jane Doe</p>
+                                    <p class="text-xs text-text-muted">Guest</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- What's next? -->
+                    <div class="bg-white rounded-xl shadow-float border border-gray-200 p-6">
+                        <h3 class="font-bold text-lg mb-4 text-secondary">What's next?</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 flex-shrink-0">
+                                    <span class="material-icons-round text-primary text-xl">email</span>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-bold text-secondary text-sm">Check your email</h4>
+                                    <p class="text-xs text-text-muted mt-1 leading-relaxed">We've sent all your booking
+                                        confirmation and vouches to your registered email address.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 flex-shrink-0">
+                                    <span class="material-icons-round text-primary text-xl">edit_document</span>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-bold text-secondary text-sm">Manage your booking</h4>
+                                    <p class="text-xs text-text-muted mt-1 leading-relaxed">Need to make changes? You
+                                        can manage your booking or add special requests.</p>
+                                    <a class="text-primary font-bold hover:text-primary-hover text-xs mt-2 inline-flex items-center gap-1"
+                                        href="#">
+                                        Go to My Bookings <span
+                                            class="material-icons-round text-sm">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Summary -->
+                    <div class="bg-white rounded-xl shadow-float border border-gray-200 p-6">
+                        <h3 class="font-bold text-lg mb-4 text-secondary">Payment Summary</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-text-muted">Hotel & Tour Total</span>
+                                <span class="text-black font-medium">MYR 6,550.00</span>
+                            </div>
+                            <div class="flex justify-between text-success">
+                                <span>Discount</span>
+                                <span>-MYR 350.00</span>
+                            </div>
+                            <div class="flex justify-start items-center gap-1 pt-2">
+                                <span class="text-xs font-bold text-primary">Earn 31,000</span>
+                                <img src="bonuslink_icon.png" class="h-3 w-3 object-contain">
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-100 my-4"></div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-bold text-lg text-secondary">Total Paid</span>
+                            <span class="font-bold text-2xl text-black">MYR 6,200.00</span>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3 border border-gray-100 space-y-3">
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-round text-text-muted">credit_card</span>
+                                <div>
+                                    <p class="text-xs text-text-muted font-medium uppercase">Paid with Visa</p>
+                                    <p class="text-sm font-bold text-black">MYR 5,000.00</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-6 flex justify-center">
+                                    <img src="bonuslink_icon.png" class="h-4 w-auto object-contain">
+                                </div>
+                                <div>
+                                    <p class="text-xs text-text-muted font-medium uppercase">Paid with Points</p>
+                                    <p class="text-sm font-bold text-black">MYR 1,200.00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Support -->
+                    <div class="bg-primary/5 rounded-xl border border-primary/10 p-6">
+                        <h3 class="font-bold text-lg mb-2 text-secondary">Customer Support</h3>
+                        <p class="text-xs text-text-muted mb-3">If you have any questions about your booking, please
+                            contact our support team.</p>
+                        <a href="tel:+60312345678"
+                            class="flex items-center gap-2 text-primary font-bold hover:text-primary-hover transition-colors">
+                            <span class="material-icons-round">phone</span>
+                            +60 3 1234 5678
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <footer class="bg-white py-6 mt-auto border-t border-gray-100">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-xs text-text-muted">&copy; 2024 Bonuslink. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

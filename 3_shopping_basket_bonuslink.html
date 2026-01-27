@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Bonuslink - Shopping Basket</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#26aae1", // Bonuslink Blue
+                        secondary: "#0077A3", // Darker Bonuslink Blue
+                        "primary-hover": "#1e8bbd",
+                        "primary-light": "#eef9fd",
+                        "text-main": "#1A1A1A",
+                        "text-muted": "#555555",
+                        "bg-surface": "#F5F8FF",
+                        success: "#4CAF50",
+                        amber: "#BC9454", // Keep for accent/stars
+                        gold: "#BC9454",
+                        error: "#EF4444",
+                    },
+                    fontFamily: {
+                        display: ["Poppins", "sans-serif"],
+                        sans: ["Poppins", "sans-serif"],
+                    },
+                    fontSize: {
+                        'xs': '0.92rem',
+                        'sm': '1.0rem',
+                        'base': '1.125rem',
+                        'lg': '1.25rem',
+                        'xl': '1.5rem',
+                        '2xl': '1.75rem',
+                        '3xl': '2.25rem',
+                        '4xl': '2.5rem',
+                    },
+                    boxShadow: {
+                        'refined': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 10px 20px -5px rgba(0, 0, 0, 0.08)',
+                        'refined-lg': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 20px 30px -10px rgba(0, 0, 0, 0.12)',
+                        'refined-xl': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 30px 60px -15px rgba(0, 0, 0, 0.15)',
+                        'blue': '0 4px 14px 0 rgba(38, 170, 225, 0.15)',
+                        'blue-lg': '0 10px 25px -5px rgba(38, 170, 225, 0.25)',
+                        'inner-subtle': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.03)',
+                        'subtle': '0 2px 10px -5px rgba(38, 170, 225, 0.15)',
+                        'float': '0 5px 15px -5px rgba(0, 0, 0, 0.08)',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s ease-out',
+                        'slide-down': 'slideDown 0.3s ease-out',
+                        'scale-in': 'scaleIn 0.3s ease-out',
+                        'highlight-pulse': 'highlightPulse 1s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        highlightPulse: {
+                            '0%': { backgroundColor: 'rgba(38, 170, 225, 0.1)' },
+                            '100%': { backgroundColor: 'transparent' }
+                        }
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .material-icons-round,
+        .material-symbols-outlined {
+            vertical-align: middle;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #26aae1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1e8bbd;
+        }
+
+        /* Card hover animation */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Compact components */
+        .card-compact {
+            padding: 1.25rem;
+        }
+
+        .tailfin-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #26aae1;
+            /* Bonuslink Blue */
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 100%, 0 70%);
+            border-radius: 2px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        /* Checkbox style override */
+        input[type="checkbox"]:checked {
+            background-color: #26aae1;
+            border-color: #26aae1;
+        }
+    </style>
+</head>
+
+<body class="bg-bg-surface font-sans text-text-main antialiased pb-12 text-base">
+
+    <!-- Sticky Header Container -->
+    <nav class="sticky top-0 z-50 bg-white border-b-2 border-gray-100 shadow-refined relative">
+
+        <!-- Row 1: Brand & Profile -->
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex justify-between items-center bg-white relative z-30">
+            <div class="flex items-center gap-4">
+                <img src="bonuslink_logo.png" alt="Bonuslink" class="h-10 w-auto object-contain">
+                <div class="h-6 w-px bg-gray-200 hidden sm:block"></div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button class="text-xs font-bold text-text-muted hover:text-primary transition-colors">MYR</button>
+
+                <!-- Logged In User State -->
+                <div class="flex items-center gap-3 pl-2 sm:border-l sm:border-gray-200 sm:ml-2">
+                    <div class="hidden sm:flex flex-col items-end leading-none">
+                        <span class="text-xs font-bold text-secondary">Hello, Viren</span>
+                        <div class="flex items-center gap-1">
+                            <span class="text-[10px] text-primary font-bold">50,000</span>
+                            <img src="bonuslink_icon.png" class="h-3 w-3 object-contain">
+                        </div>
+                    </div>
+                    <button
+                        class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 shadow-sm">
+                        <span class="material-icons-round text-xl">person</span>
+                    </button>
+                    <!-- Shopping Cart Icon Added for Basket Page -->
+                    <button
+                        class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 shadow-sm relative">
+                        <span class="material-icons-round text-xl">shopping_cart</span>
+                        <span
+                            class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-sm">1</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2: Context Bar -->
+        <div class="bg-gradient-to-b from-gray-50 to-white border-t border-gray-100 relative z-30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+                <div class="flex items-center gap-2 text-xs text-text-muted">
+                    <span class="hover:text-primary cursor-pointer">Home</span>
+                    <span class="material-icons-round text-[10px]">chevron_right</span>
+                    <span class="text-primary font-bold">Shopping Basket</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="mb-5">
+            <h1 class="text-2xl font-semibold text-secondary tracking-tight">Your Holiday</h1>
+            <p class="text-xs text-text-muted font-medium mt-1">Review your items below. Complete your booking before
+                the timer runs out!</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6"> <!-- Reduced gap from 8 to 6 -->
+
+            <!-- Left Column: Items -->
+            <div class="lg:col-span-2 space-y-4"> <!-- Reduced space-y -->
+
+
+                <!-- HOTEL -->
+                <div
+                    class="bg-white rounded-xl shadow-refined border border-gray-100 overflow-hidden card-compact group hover:border-primary/30 transition-all">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <span class="material-icons-round text-primary text-xl">hotel</span>
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-center mb-1">
+                                <h2 class="text-lg font-semibold text-secondary">Cinnamon Dhonveli Maldives</h2>
+                                <button
+                                    class="text-xs font-bold uppercase text-primary hover:bg-primary/5 px-2 py-1 rounded transition-colors">Change
+                                    room</button>
+                            </div>
+                            <p class="text-xs text-text-muted font-medium mb-3">4 nights • Oct 23 - Oct 27 2024</p>
+
+                            <div class="bg-gray-50 rounded-lg p-3 border border-gray-100/50">
+                                <div class="flex flex-col sm:flex-row gap-4">
+                                    <img alt="Room" class="w-full sm:w-32 h-20 object-cover rounded-lg shadow-sm"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeEnBdaO_e2rZkGLeHWddV8SkEYAzVPVlNUURRm0cR9gQTTNb6wTVV3xUoJbdaXntyA_qrwPt4WRV9M2nbKcJ51G0YN3OMZdwRiikeitaHX68zugzyZV9HpC1Jth8XAM7cwcn2HpSWTxj58Kssh5_xFESljykWAxkA8-GRt4EEimnMosMdojGR0Fry6FzGONj9wyKv04XVNUkNZBA8c6pKvC87kySYPtysQQDWin4SXouX6iNx92mzcVOVRG40WaKpMHqGN6a6GZs" />
+                                    <div>
+                                        <h3 class="font-bold text-text-main text-sm">Over-Water Suite</h3>
+                                        <ul class="mt-1 space-y-1">
+                                            <li class="flex items-center text-[11px] text-text-muted"><span
+                                                    class="material-icons-round text-success text-[14px] mr-1">check</span>
+                                                Breakfast included</li>
+                                            <li class="flex items-center text-[11px] text-text-muted"><span
+                                                    class="material-icons-round text-success text-[14px] mr-1">check</span>
+                                                Free cancellation</li>
+                                            <li class="flex items-center text-[11px] text-text-muted"><span
+                                                    class="material-icons-round text-success text-[14px] mr-1">check</span>
+                                                Seaplane transfer included</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECS -->
+                <div class="py-2">
+                    <div class="flex items-center mb-3">
+                        <span class="material-icons-round text-primary mr-2 text-lg">local_activity</span>
+                        <h3 class="text-base font-bold text-secondary">Recommended for you</h3>
+                    </div>
+                    <div
+                        class="bg-white rounded-xl border border-gray-100 p-3 flex gap-4 hover:shadow-refined transition-all">
+                        <img alt="Tour" class="w-24 h-24 object-cover rounded-lg bg-gray-100"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbeBeGl8ZUbBEq1I9DLMQsI5baXuYCkVPvMNpFKBR1wzggng_u00iy1TKkLiG-LnzFCRtLOJgnYmX7EC-aL8tSBN_LNCuLbJkvM6suB9aG6DB0F83-g8Zj8Lz-YaqpKKdaaSK6azbJ9AI_hReZR_7pNSCNhlElsXkag4qCAJc6F8Dsj4QJlV6IxXDFAqBbGzmgS2h1i-BnULpB_qqP1_WmeUqFuGrFxffL8KqdypkWhkQYwoDuAx9ByJVz5AtF2SpHnno8XI2hZ14" />
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-text-main text-sm">Sunset Dolphin Cruise</h4>
+                                <p class="text-[11px] text-text-muted mt-1 leading-normal line-clamp-2">Enjoy a magical
+                                    2-hour cruise watching dolphins play in the sunset.</p>
+                            </div>
+                            <div class="flex items-center justify-between mt-2">
+                                <div><span class="font-bold text-primary text-sm">MYR 250</span> <span
+                                        class="text-[10px] text-text-muted">pp</span></div>
+                                <button
+                                    class="bg-primary/10 text-primary hover:bg-primary hover:text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wide transition-all">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- ADD MORE GRID -->
+                <div class="mt-6">
+                    <h2 class="text-lg font-bold text-secondary mb-3">Add more to your trip</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <!-- Add Item Card -->
+                        <div
+                            class="bg-white p-3 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-refined transition-all text-center group cursor-pointer">
+                            <div
+                                class="w-8 h-8 rounded-full bg-primary/5 text-primary flex items-center justify-center mx-auto mb-2 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <span class="material-icons-round text-lg">hotel</span>
+                            </div>
+                            <h3 class="font-bold text-secondary text-xs">Hotel</h3>
+                            <p class="text-[10px] text-text-muted mb-2">Add another stay</p>
+                            <span class="text-[10px] font-bold text-primary uppercase group-hover:underline">Add</span>
+                        </div>
+                        <!-- Add Item Card -->
+                        <div
+                            class="bg-white p-3 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-refined transition-all text-center group cursor-pointer">
+                            <div
+                                class="w-8 h-8 rounded-full bg-primary/5 text-primary flex items-center justify-center mx-auto mb-2 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <span class="material-icons-round text-lg">directions_car</span>
+                            </div>
+                            <h3 class="font-bold text-secondary text-xs">Car Rental</h3>
+                            <p class="text-[10px] text-text-muted mb-2">Rent a vehicle</p>
+                            <span class="text-[10px] font-bold text-primary uppercase group-hover:underline">Add</span>
+                        </div>
+                        <!-- Add Item Card -->
+                        <div
+                            class="bg-white p-3 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-refined transition-all text-center group cursor-pointer">
+                            <div
+                                class="w-8 h-8 rounded-full bg-primary/5 text-primary flex items-center justify-center mx-auto mb-2 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <span class="material-icons-round text-lg">transfer_within_a_station</span>
+                            </div>
+                            <h3 class="font-bold text-secondary text-xs">Transfer</h3>
+                            <p class="text-[10px] text-text-muted mb-2">Airport pickup</p>
+                            <span class="text-[10px] font-bold text-primary uppercase group-hover:underline">Add</span>
+                        </div>
+                        <!-- Add Item Card -->
+                        <div
+                            class="bg-white p-3 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-refined transition-all text-center group cursor-pointer">
+                            <div
+                                class="w-8 h-8 rounded-full bg-primary/5 text-primary flex items-center justify-center mx-auto mb-2 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <span class="material-icons-round text-lg">local_activity</span>
+                            </div>
+                            <h3 class="font-bold text-secondary text-xs">Tours</h3>
+                            <p class="text-[10px] text-text-muted mb-2">Explore local</p>
+                            <span class="text-[10px] font-bold text-primary uppercase group-hover:underline">Add</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Price Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-refined-lg border border-gray-200 p-5 sticky top-20">
+                    <h3 class="font-bold text-lg mb-3 text-secondary">Price Summary</h3>
+
+                    <!-- Price Breakdown -->
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-text-muted">Hotel stay (2 adults)</span>
+                            <span class="text-secondary font-medium">MYR 5,500.00</span>
+                        </div>
+                        <div class="flex justify-between text-success">
+                            <span>Stay discount</span>
+                            <span>-MYR 1,200.00</span>
+                        </div>
+                        <div class="flex justify-between items-center text-text-muted pt-1">
+                            <span>Taxes & Fees</span>
+                            <span>Included</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 my-4"></div>
+
+                    <!-- Total -->
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-lg text-secondary">Total</span>
+                        <div class="text-right">
+                            <p class="font-bold text-2xl text-secondary">MYR 4,300.00</p>
+                            <p class="text-xs text-text-muted">MYR 2,150 per person</p>
+                        </div>
+                    </div>
+                    <!-- Bonuslink Point Calculation -->
+                    <div class="flex justify-end items-center gap-1 mt-1">
+                        <span class="text-xs font-bold text-primary">Earn 21,500</span>
+                        <img src="bonuslink_icon.png" class="h-3 w-3 object-contain">
+                    </div>
+                    <p class="text-xs text-text-muted mt-1 text-right">Includes taxes and fees</p>
+
+                    <button
+                        class="bg-primary text-white w-full py-3 rounded-lg font-bold text-sm mt-5 hover:bg-primary-hover shadow-subtle uppercase tracking-wide transition-all transform active:scale-[0.98]">
+                        Continue to Book
+                    </button>
+
+                    <p class="text-xs text-text-muted mt-2 text-center">Price held for <span
+                            class="font-bold text-secondary">18:32</span></p>
+
+                    <div class="mt-5 text-xs text-text-main">
+                        <div class="flex items-center text-success">
+                            <span class="material-icons-round mr-1 text-sm">check_circle</span>
+                            <span class="font-semibold">Best Price Guaranteed</span>
+                        </div>
+                        <p class="flex items-start text-gray-400 mt-2">
+                            <span class="material-icons-round text-xs mr-1">lock</span>
+                            <span>Your data is secure. We use 256-bit encryption.</span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-text-muted text-xs">
+            &copy; 2026 Bonuslink. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+
+</html>

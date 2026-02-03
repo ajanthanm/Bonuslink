@@ -8,7 +8,8 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
     <script>
@@ -30,7 +31,7 @@
                     },
                     fontFamily: {
                         display: ["Poppins", "sans-serif"],
-                        sans: ["Poppins", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
                     },
                     fontSize: {
                         'xs': '0.75rem',
@@ -176,8 +177,30 @@
         <div
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex justify-between items-center bg-white relative z-30">
             <div class="flex items-center gap-4">
+                <!-- Mobile Hamburger -->
+                <button onclick="toggleMobileMenu()"
+                    class="lg:hidden p-1 -ml-1 text-text-muted hover:text-primary transition-colors">
+                    <span class="material-icons-round text-2xl">menu</span>
+                </button>
+
                 <img src="bonuslink_logo.png" alt="Bonuslink" class="h-10 w-auto object-contain">
-                <div class="h-6 w-px bg-gray-200 hidden sm:block"></div>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden lg:flex items-center gap-6 ml-4">
+                    <a href="https://www.bonuslink.com.my/products" target="_blank"
+                        class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Earn
+                        Redeem</a>
+                    <a href="https://www.bonuslink.com.my/stores" target="_blank"
+                        class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Shop</a>
+                    <a href="https://www.bonuslink.com.my/brands" target="_blank"
+                        class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Brands</a>
+                    <a href="https://www.bonuslink.com.my/promotions" target="_blank"
+                        class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Promotions</a>
+                    <a href="https://www.bonuslink.com.my/travel" target="_blank"
+                        class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Travel</a>
+                </div>
+
+                <div class="h-6 w-px bg-gray-200 hidden lg:block"></div>
             </div>
             <div class="flex items-center gap-3">
                 <button class="text-xs font-bold text-text-muted hover:text-primary transition-colors">MYR</button>
@@ -186,10 +209,7 @@
                 <div class="flex items-center gap-3 pl-2 sm:border-l sm:border-gray-200 sm:ml-2">
                     <div class="hidden sm:flex flex-col items-end leading-none">
                         <span class="text-xs font-bold text-secondary">Hello, Viren</span>
-                        <div class="flex items-center gap-1">
-                            <span class="text-[10px] text-primary font-bold">50,000</span>
-                            <img src="bonuslink_icon.png" class="h-3 w-3 object-contain">
-                        </div>
+
                     </div>
                     <button
                         class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 shadow-sm">
@@ -314,6 +334,40 @@
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu-overlay" onclick="toggleMobileMenu()"
+        class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300 opacity-0">
+    </div>
+
+    <div id="mobile-menu-drawer"
+        class="fixed top-0 bottom-0 left-0 w-[280px] bg-white z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+
+        <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+            <img src="bonuslink_logo.png" alt="Bonuslink" class="h-8 w-auto object-contain">
+            <button onclick="toggleMobileMenu()" class="text-text-muted hover:text-primary p-1">
+                <span class="material-icons-round text-xl">close</span>
+            </button>
+        </div>
+
+        <div class="flex flex-col py-4">
+            <a href="https://www.bonuslink.com.my/products" target="_blank"
+                class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Earn
+                Redeem</a>
+            <a href="https://www.bonuslink.com.my/stores" target="_blank"
+                class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Shop</a>
+            <a href="https://www.bonuslink.com.my/brands" target="_blank"
+                class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Brands</a>
+            <a href="https://www.bonuslink.com.my/promotions" target="_blank"
+                class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Promotions</a>
+            <a href="https://www.bonuslink.com.my/travel" target="_blank"
+                class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Travel</a>
+        </div>
+
+        <div class="mt-auto p-6 bg-gray-50 text-xs text-text-muted">
+            <p>&copy; 2026 Bonuslink</p>
+        </div>
+    </div>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow">
 
@@ -443,8 +497,8 @@
                     "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80"
                 ],
                 roomType: "Garden Pool Villa",
-                boardType: "Breakfast",
-                recBadge: "Boutique Choice"
+                recBadge: "Boutique Choice",
+                hotelCategory: "Family Friendly"
             },
             {
                 id: 2,
@@ -460,8 +514,8 @@
                     "https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&w=800&q=80"
                 ],
                 roomType: "Jungle Oasis",
-                boardType: "Breakfast",
-                recBadge: "Luxury"
+                recBadge: "Luxury",
+                hotelCategory: "Bonuslink Exclusive"
             },
             {
                 id: 3,
@@ -477,7 +531,6 @@
                     "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=800&q=80"
                 ],
                 roomType: "Terrace Suite",
-                boardType: "Half Board",
                 recBadge: "Recommended"
             },
             {
@@ -494,8 +547,8 @@
                     "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&w=800&q=80"
                 ],
                 roomType: "Deluxe Pool Villa",
-                boardType: "All Inclusive",
-                recBadge: "Private Pool"
+                recBadge: "Private Pool",
+                hotelCategory: "Muslim Friendly"
             },
             {
                 id: 5,
@@ -511,8 +564,8 @@
                     "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=800&q=80"
                 ],
                 roomType: "Deluxe Plunge Pool",
-                boardType: "Breakfast",
-                recBadge: "Family Friendly"
+                recBadge: "Family Friendly",
+                hotelCategory: "Family Friendly"
             }
         ];
 
@@ -531,8 +584,8 @@
                     "https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?auto=format&fit=crop&w=800&q=80"
                 ],
                 roomType: "Hideaway Pool Villa",
-                boardType: "Breakfast",
-                recBadge: "Eco Luxury"
+                recBadge: "Eco Luxury",
+                hotelCategory: "Bonuslink Exclusive"
             },
             {
                 id: 7,
@@ -548,7 +601,6 @@
                     "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
                 ],
                 roomType: "One Bedroom Pool Villa",
-                boardType: "Half Board",
                 recBadge: null
             },
             {
@@ -565,8 +617,8 @@
                     "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80"
                 ],
                 roomType: "Duplex Suite",
-                boardType: "Breakfast",
-                recBadge: "Value Choice"
+                recBadge: "Value Choice",
+                hotelCategory: "Muslim Friendly"
             },
             {
                 id: 9,
@@ -582,8 +634,8 @@
                     "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=800&q=80"
                 ],
                 roomType: "Grand Deluxe",
-                boardType: "Full Board",
-                recBadge: null
+                recBadge: null,
+                hotelCategory: "Family Friendly"
             },
             {
                 id: 10,
@@ -599,7 +651,6 @@
                     "https://images.unsplash.com/photo-1512918760532-3c50f8f2b17c?auto=format&fit=crop&w=800&q=80"
                 ],
                 roomType: "Tropical Pool Villa",
-                boardType: "Breakfast",
                 recBadge: "Private Island"
             }
         ];
@@ -621,6 +672,14 @@
                     <div id="rec-slider-${index}" class="h-full w-full flex overflow-x-auto snap-x snap-mandatory hide-scrollbar scroll-smooth absolute inset-0">
                         ${hotel.images.map(img => `<img src="${img}" class="w-full h-full object-cover shrink-0 snap-center image-zoom" />`).join('')}
                     </div>
+                    <div class="absolute inset-y-0 flex items-center justify-between w-full px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                        <button onclick="event.stopPropagation(); scrollSlider('rec-slider-${index}', 'left')" class="pointer-events-auto w-7 h-7 flex items-center justify-center rounded-full bg-white/95 hover:bg-white text-primary shadow-refined backdrop-blur-sm transition-all duration-300 hover:scale-110">
+                            <span class="material-icons-round text-base">chevron_left</span>
+                        </button>
+                        <button onclick="event.stopPropagation(); scrollSlider('rec-slider-${index}', 'right')" class="pointer-events-auto w-7 h-7 flex items-center justify-center rounded-full bg-white/95 hover:bg-white text-primary shadow-refined backdrop-blur-sm transition-all duration-300 hover:scale-110">
+                            <span class="material-icons-round text-base">chevron_right</span>
+                        </button>
+                    </div>
                     ${hotel.recBadge ? `<div class="absolute top-3 left-3 badge-premium text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider shadow-refined-lg z-10">${hotel.recBadge}</div>` : ''}
                 </div>
 
@@ -635,9 +694,14 @@
                     </p>
 
                     <div class="mt-1 pt-3 border-t border-gray-50">
+                        <div class="mb-1">
+                            <div class="inline-block px-2 py-1 rounded bg-gray-100 text-secondary text-[10px] font-bold uppercase tracking-wider ${hotel.hotelCategory ? '' : 'invisible'}">
+                                ${hotel.hotelCategory || 'Placeholder'}
+                            </div>
+                        </div>
                         <div class="flex flex-wrap gap-2">
-                            <div class="flex items-center gap-1 text-xs text-text-muted font-medium">
-                                <span class="material-icons-round text-gray-400 text-sm">bed</span> ${hotel.roomType}
+                            <div class="flex items-center gap-1 text-xs text-primary font-bold">
+                                Earn ${points} <img src="bonuslink_icon.png" class="h-3 w-3 object-contain">
                             </div>
                         </div>
                     </div>
@@ -646,7 +710,6 @@
                         <div>
                             ${hotel.oldPrice ? `<div class="text-[10px] text-text-muted line-through mb-0.5">MYR ${hotel.oldPrice.toLocaleString()}</div>` : ''}
                             <div class="text-lg font-bold text-black leading-none">MYR ${hotel.price.toLocaleString()}</div>
-                            <div class="text-[10px] font-bold text-primary flex items-center gap-1 mt-0.5">Earn ${points} <img src="bonuslink_icon.png" class="h-3 w-3 object-contain"></div>
                         </div>
                         <button class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold uppercase tracking-wide hover:bg-primary-hover hover:shadow-blue-lg transition-all duration-300 shadow-blue hover:-translate-y-0.5">
                             View Deal
@@ -694,7 +757,7 @@
                 const points = (hotel.price * 100).toLocaleString();
 
                 const html = `
-                <div onclick="selectHotel(${hotel.id}, this)" class="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-refined hover:shadow-refined-lg card-hover cursor-pointer transition-all duration-300 animate-slide-down">
+                <div onclick="selectHotel(${hotel.id}, this)" class="group bg-white rounded-xl border border-gray-100 overflow-hidden shadow-refined hover:shadow-refined-lg card-hover cursor-pointer transition-all duration-300 animate-slide-down">
                     <div class="flex flex-col lg:flex-row h-full">
 
                         <!-- Image Carousel -->
@@ -727,15 +790,13 @@
 
                                 <!-- Amenity Badges -->
                                 <div class="mt-1 pt-4 border-t border-gray-50">
-                                    <div class="flex flex-wrap gap-4">
-                                        <div class="flex items-center gap-1.5 text-xs text-text-muted font-medium">
-                                            <span class="material-icons-round text-gray-400 text-base">bed</span> ${hotel.roomType}
-                                        </div>
-                                        <div class="flex items-center gap-1.5 text-xs text-text-muted font-medium">
-                                            <span class="material-icons-round text-gray-400 text-base">restaurant</span> ${hotel.boardType}
-                                        </div>
+                                    <div class="flex flex-wrap gap-3 items-center">
+                                        ${hotel.hotelCategory ? `
+                                        <div class="inline-block px-2 py-1 rounded bg-gray-100 text-secondary text-[10px] font-bold uppercase tracking-wider">
+                                            ${hotel.hotelCategory}
+                                        </div>` : ''}
                                         <div class="flex items-center gap-1.5 text-xs text-primary font-bold">
-                                            <span class="material-icons-round text-base">verified</span> Flight & Hotel Package
+                                            Earn ${points} <img src="bonuslink_icon.png" class="h-3 w-3 object-contain">
                                         </div>
                                     </div>
                                 </div>
@@ -746,7 +807,6 @@
                                 <div class="text-left lg:text-right">
                                     ${hotel.oldPrice ? `<div class="text-xs text-text-muted line-through mb-0.5">MYR ${hotel.oldPrice.toLocaleString()}</div>` : ''}
                                     <div class="text-lg font-bold text-black leading-none mb-0.5">MYR ${hotel.price.toLocaleString()}</div>
-                                    <div class="text-xs font-bold text-primary mb-1 flex items-center lg:justify-end gap-1">Earn ${points} <img src="bonuslink_icon.png" class="h-3 w-3 object-contain"></div>
                                     <div class="text-[10px] text-text-muted mb-2 font-medium">per person</div>
                                     <div class="text-xs text-success font-semibold flex items-center gap-1 justify-end">
                                         <span class="material-icons-round text-sm">check_circle</span> Free Cancellation
@@ -812,6 +872,34 @@
         function toggleSection(id) {
             const section = document.getElementById(id);
             section.classList.toggle('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobile-menu-overlay');
+            const drawer = document.getElementById('mobile-menu-drawer');
+            const body = document.body;
+
+            if (drawer.classList.contains('-translate-x-full')) {
+                // Open
+                overlay.classList.remove('hidden');
+                // Small delay to allow display to apply before opacity transition
+                requestAnimationFrame(() => {
+                    overlay.classList.remove('opacity-0');
+                    drawer.classList.remove('-translate-x-full');
+                });
+                body.classList.add('overflow-hidden'); // Prevent background scrolling
+            } else {
+                // Close
+                overlay.classList.add('opacity-0');
+                drawer.classList.add('-translate-x-full');
+
+                // Wait for transition to finish before hiding overlay
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+
+                body.classList.remove('overflow-hidden');
+            }
         }
 
         let selectedHotelId = null;

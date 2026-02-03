@@ -8,7 +8,8 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
     <script>
@@ -30,7 +31,7 @@
                     },
                     fontFamily: {
                         display: ["Poppins", "sans-serif"],
-                        sans: ["Poppins", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
                     },
                     fontSize: {
                         'xs': '0.75rem',
@@ -101,23 +102,45 @@
         <div
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex justify-between items-center bg-white relative z-30">
             <div class="flex items-center gap-4">
+                <!-- Mobile Hamburger -->
+                <button onclick="toggleMobileMenu()"
+                    class="lg:hidden p-1 -ml-1 text-text-muted hover:text-primary transition-colors">
+                    <span class="material-icons-round text-2xl">menu</span>
+                </button>
+
                 <img src="bonuslink_logo.png" alt="Bonuslink" class="h-10 w-auto object-contain">
-                <div class="h-6 w-px bg-gray-200 hidden sm:block"></div>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden lg:flex items-center gap-6 ml-4">
+                    <a href="https://www.bonuslink.com.my/products" target="_blank"
+                        class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Earn
+                        Redeem</a>
+                    <a href="https://www.bonuslink.com.my/stores" target="_blank"
+                        class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Shop</a>
+                    <a href="https://www.bonuslink.com.my/brands" target="_blank"
+                        class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Brands</a>
+                    <a href="https://www.bonuslink.com.my/promotions" target="_blank"
+                        class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Promotions</a>
+                    <a href="https://www.bonuslink.com.my/travel" target="_blank"
+                        class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Travel</a>
+                </div>
+
+                <div class="h-6 w-px bg-gray-200 hidden lg:block"></div>
             </div>
             <div class="flex items-center gap-3">
                 <button class="text-xs font-bold text-text-muted hover:text-primary transition-colors">MYR</button>
+
+                <!-- Logged In User State -->
                 <div class="flex items-center gap-3 pl-2 sm:border-l sm:border-gray-200 sm:ml-2">
                     <div class="hidden sm:flex flex-col items-end leading-none">
                         <span class="text-xs font-bold text-secondary">Hello, Viren</span>
-                        <div class="flex items-center gap-1">
-                            <span class="text-[10px] text-primary font-bold">50,000</span>
-                            <img src="bonuslink_icon.png" class="h-3 w-3 object-contain">
-                        </div>
+
                     </div>
                     <button
                         class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 shadow-sm">
                         <span class="material-icons-round text-xl">person</span>
                     </button>
+                    <!-- Shopping Cart Icon -->
                     <button
                         class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 shadow-sm relative">
                         <span class="material-icons-round text-xl">shopping_cart</span>
@@ -129,10 +152,44 @@
         </div>
     </nav>
 
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu-overlay" onclick="toggleMobileMenu()"
+        class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300 opacity-0">
+    </div>
+
+    <div id="mobile-menu-drawer"
+        class="fixed top-0 bottom-0 left-0 w-[280px] bg-white z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+
+        <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+            <img src="bonuslink_logo.png" alt="Bonuslink" class="h-8 w-auto object-contain">
+            <button onclick="toggleMobileMenu()" class="text-text-muted hover:text-primary p-1">
+                <span class="material-icons-round text-xl">close</span>
+            </button>
+        </div>
+
+        <div class="flex flex-col py-4">
+            <a href="https://www.bonuslink.com.my/products" target="_blank"
+                class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Earn
+                Redeem</a>
+            <a href="https://www.bonuslink.com.my/stores" target="_blank"
+                class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Shop</a>
+            <a href="https://www.bonuslink.com.my/brands" target="_blank"
+                class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Brands</a>
+            <a href="https://www.bonuslink.com.my/promotions" target="_blank"
+                class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Promotions</a>
+            <a href="https://www.bonuslink.com.my/travel" target="_blank"
+                class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Travel</a>
+        </div>
+
+        <div class="mt-auto p-6 bg-gray-50 text-xs text-text-muted">
+            <p>&copy; 2026 Bonuslink</p>
+        </div>
+    </div>
+
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow">
         <!-- Page Title -->
         <div class="mb-6">
-            <h1 class="text-2xl font-semibold text-secondary tracking-tight">Secure Payment</h1>
+            <h1 class="text-2xl font-display font-semibold text-secondary tracking-tight">Secure Payment</h1>
             <p class="text-text-muted mt-1 text-xs">Complete your booking securely with Bonuslink.</p>
         </div>
 
@@ -166,7 +223,8 @@
                             <img src="bonuslink_icon.png" class="w-6 h-6 object-contain">
                         </div>
                         <div>
-                            <h3 class="font-bold text-secondary text-base">Earn 389,600 Bonuslink Points</h3>
+                            <h3 class="font-display font-bold text-secondary text-base">Earn 389,600 Bonuslink Points
+                            </h3>
                             <p class="text-xs text-text-muted mt-0.5">Use these points for your next holiday or redeem
                                 exclusive rewards.</p>
                         </div>
@@ -176,7 +234,7 @@
                 <!-- Payment Method Section -->
                 <div class="bg-white rounded-xl shadow-refined border border-gray-100 overflow-hidden">
                     <div class="p-6 border-b border-gray-100">
-                        <h2 class="text-lg font-bold text-secondary flex items-center gap-2">
+                        <h2 class="text-lg font-display font-bold text-secondary flex items-center gap-2">
                             <span class="material-icons-round text-primary text-lg">payment</span>
                             Payment Method
                         </h2>
@@ -187,7 +245,7 @@
                             <img src="bonuslink_icon.png" alt="Bonuslink" class="w-8 h-8 object-contain">
                         </div>
 
-                        <h3 class="text-lg font-bold text-secondary mb-2">Pay with Bonuslink</h3>
+                        <h3 class="text-lg font-display font-bold text-secondary mb-2">Pay with Bonuslink</h3>
                         <p class="text-text-muted text-sm mb-8 max-w-md mx-auto">
                             Please continue to Bonuslink to securely complete your payment. You will be redirected back
                             to this page once the transaction is complete.
@@ -214,7 +272,7 @@
             <!-- Right Column: Summary -->
             <div class="lg:col-span-1">
                 <div class="bg-white rounded-xl shadow-float border border-gray-200 p-5 sticky top-20">
-                    <h3 class="font-bold text-base mb-3 text-secondary">Your package summary</h3>
+                    <h3 class="font-display font-bold text-base mb-3 text-secondary">Your package summary</h3>
 
                     <!-- Hotel Summary -->
                     <div class="flex gap-3 mb-3">
@@ -280,6 +338,35 @@
             &copy; 2026 Bonuslink. All rights reserved.
         </div>
     </footer>
+    <script>
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobile-menu-overlay');
+            const drawer = document.getElementById('mobile-menu-drawer');
+            const body = document.body;
+
+            if (drawer.classList.contains('-translate-x-full')) {
+                // Open
+                overlay.classList.remove('hidden');
+                // Small delay to allow display to apply before opacity transition
+                requestAnimationFrame(() => {
+                    overlay.classList.remove('opacity-0');
+                    drawer.classList.remove('-translate-x-full');
+                });
+                body.classList.add('overflow-hidden'); // Prevent background scrolling
+            } else {
+                // Close
+                overlay.classList.add('opacity-0');
+                drawer.classList.add('-translate-x-full');
+
+                // Wait for transition to finish before hiding overlay
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+
+                body.classList.remove('overflow-hidden');
+            }
+        }
+    </script>
 </body>
 
 </html>

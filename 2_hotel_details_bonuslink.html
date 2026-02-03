@@ -8,7 +8,8 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
     <script>
@@ -30,7 +31,7 @@
                     },
                     fontFamily: {
                         display: ["Poppins", "sans-serif"],
-                        sans: ["Poppins", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
                     },
                     fontSize: {
                         'xs': '0.75rem',
@@ -132,19 +133,39 @@
             <div
                 class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex justify-between items-center bg-white relative z-30">
                 <div class="flex items-center gap-4">
+                    <!-- Mobile Hamburger -->
+                    <button onclick="toggleMobileMenu()"
+                        class="lg:hidden p-1 -ml-1 text-text-muted hover:text-primary transition-colors">
+                        <span class="material-icons-round text-2xl">menu</span>
+                    </button>
+
                     <img src="bonuslink_logo.png" alt="Bonuslink" class="h-10 w-auto object-contain">
-                    <div class="h-6 w-px bg-gray-200 hidden sm:block"></div>
+
+                    <!-- Desktop Nav Links -->
+                    <div class="hidden lg:flex items-center gap-6 ml-4">
+                        <a href="https://www.bonuslink.com.my/products" target="_blank"
+                            class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Earn
+                            Redeem</a>
+                        <a href="https://www.bonuslink.com.my/stores" target="_blank"
+                            class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Shop</a>
+                        <a href="https://www.bonuslink.com.my/brands" target="_blank"
+                            class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Brands</a>
+                        <a href="https://www.bonuslink.com.my/promotions" target="_blank"
+                            class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Promotions</a>
+                        <a href="https://www.bonuslink.com.my/travel" target="_blank"
+                            class="text-xs font-bold uppercase text-text-muted hover:text-primary transition-colors tracking-wide">Travel</a>
+                    </div>
+
+                    <div class="h-6 w-px bg-gray-200 hidden lg:block"></div>
                 </div>
                 <div class="flex items-center gap-3">
                     <button class="text-xs font-bold text-text-muted hover:text-primary transition-colors">MYR</button>
+
                     <!-- Logged In User State -->
                     <div class="flex items-center gap-3 pl-2 sm:border-l sm:border-gray-200 sm:ml-2">
                         <div class="hidden sm:flex flex-col items-end leading-none">
                             <span class="text-xs font-bold text-secondary">Hello, Viren</span>
-                            <div class="flex items-center gap-1">
-                                <span class="text-[10px] text-primary font-bold">50,000</span>
-                                <img src="bonuslink_icon.png" class="h-3 w-3 object-contain">
-                            </div>
+
                         </div>
                         <button
                             class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 shadow-sm">
@@ -161,6 +182,40 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu-overlay" onclick="toggleMobileMenu()"
+            class="fixed inset-0 bg-black/50 z-[60] hidden transition-opacity duration-300 opacity-0">
+        </div>
+
+        <div id="mobile-menu-drawer"
+            class="fixed top-0 bottom-0 left-0 w-[280px] bg-white z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+
+            <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+                <img src="bonuslink_logo.png" alt="Bonuslink" class="h-8 w-auto object-contain">
+                <button onclick="toggleMobileMenu()" class="text-text-muted hover:text-primary p-1">
+                    <span class="material-icons-round text-xl">close</span>
+                </button>
+            </div>
+
+            <div class="flex flex-col py-4">
+                <a href="https://www.bonuslink.com.my/products" target="_blank"
+                    class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Earn
+                    Redeem</a>
+                <a href="https://www.bonuslink.com.my/stores" target="_blank"
+                    class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Shop</a>
+                <a href="https://www.bonuslink.com.my/brands" target="_blank"
+                    class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Brands</a>
+                <a href="https://www.bonuslink.com.my/promotions" target="_blank"
+                    class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Promotions</a>
+                <a href="https://www.bonuslink.com.my/travel" target="_blank"
+                    class="px-6 py-3 text-sm font-bold uppercase text-text-main hover:bg-primary/5 hover:text-primary transition-colors border-l-4 border-transparent hover:border-primary">Travel</a>
+            </div>
+
+            <div class="mt-auto p-6 bg-gray-50 text-xs text-text-muted">
+                <p>&copy; 2026 Bonuslink</p>
+            </div>
+        </div>
 
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow">
             <!-- Back Navigation -->
@@ -205,7 +260,9 @@
                         <div class="p-5 md:p-6">
                             <div class="flex justify-between items-start gap-4">
                                 <div>
-                                    <h1 class="text-2xl font-semibold text-secondary tracking-tight mb-1">Cinnamon Dhonveli Maldives
+                                    <h1 class="text-2xl font-display font-semibold text-secondary tracking-tight mb-1">
+                                        Cinnamon
+                                        Dhonveli Maldives
                                     </h1>
                                     <p class="text-text-muted text-sm flex items-center gap-1"><span
                                             class="material-icons-round text-primary text-base">location_on</span> North
@@ -246,7 +303,7 @@
 
                             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-5"
                                 id="room-type">
-                                <h2 class="text-xl font-semibold text-secondary mb-4">Select your room</h2>
+                                <h2 class="text-xl font-display font-semibold text-secondary mb-4">Select your room</h2>
                                 <div class="space-y-6">
                                     <!-- Over-Water Suite (Fixed Layout) -->
                                     <div
@@ -275,7 +332,8 @@
                                             </div>
                                             <div class="md:w-2/3 flex flex-col">
                                                 <div class="flex justify-between items-start mb-2">
-                                                    <h3 class="text-xl font-bold text-secondary">Over-Water Suite</h3>
+                                                    <h3 class="text-xl font-display font-bold text-secondary">Over-Water
+                                                        Suite</h3>
                                                     <span class="text-lg font-bold text-primary">+MYR 0</span>
                                                 </div>
                                                 <div class="text-sm text-text-muted mb-2">
@@ -388,7 +446,8 @@
                                             </div>
                                             <div class="md:w-2/3 flex flex-col">
                                                 <div class="flex justify-between items-start mb-2">
-                                                    <h3 class="text-xl font-bold text-secondary">Beach Suite</h3>
+                                                    <h3 class="text-xl font-display font-bold text-secondary">Beach
+                                                        Suite</h3>
                                                     <span class="text-lg font-bold text-primary">+MYR 1,100</span>
                                                 </div>
                                                 <div class="text-sm text-text-muted mb-4">
@@ -405,7 +464,7 @@
 
                             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-5"
                                 id="reviews">
-                                <h2 class="text-xl font-semibold text-secondary mb-5">Guest Reviews</h2>
+                                <h2 class="text-xl font-display font-semibold text-secondary mb-5">Guest Reviews</h2>
                                 <div class="flex items-center mb-6 bg-gray-50 p-3 rounded-xl border border-gray-100">
                                     <div
                                         class="bg-primary text-white text-2xl font-bold px-3 py-2 rounded-lg shadow-sm">
@@ -474,7 +533,7 @@
                                 <div class="border-b border-gray-100" id="location">
                                     <button @click="open = open === 'location' ? '' : 'location'"
                                         class="w-full text-left p-5 md:p-6 flex justify-between items-center hover:bg-gray-50 transition-colors">
-                                        <h2 class="text-lg font-bold text-secondary">Location</h2>
+                                        <h2 class="text-lg font-display font-bold text-secondary">Location</h2>
                                         <span
                                             class="material-icons-round text-primary transition-transform duration-300"
                                             :class="{'rotate-180': open === 'location'}">expand_more</span>
@@ -494,7 +553,7 @@
                                 <div class="border-b border-gray-100" id="hotel-information">
                                     <button @click="open = open === 'amenities' ? '' : 'amenities'"
                                         class="w-full text-left p-5 md:p-6 flex justify-between items-center hover:bg-gray-50 transition-colors">
-                                        <h2 class="text-lg font-bold text-secondary">Hotel Information</h2>
+                                        <h2 class="text-lg font-display font-bold text-secondary">Hotel Information</h2>
                                         <span
                                             class="material-icons-round text-primary transition-transform duration-300"
                                             :class="{'rotate-180': open === 'amenities'}">expand_more</span>
@@ -535,7 +594,7 @@
                                 <div id="policies">
                                     <button @click="open = open === 'policies' ? '' : 'policies'"
                                         class="w-full text-left p-5 md:p-6 flex justify-between items-center hover:bg-gray-50 transition-colors">
-                                        <h2 class="text-lg font-bold text-secondary">Policies and T&C</h2>
+                                        <h2 class="text-lg font-display font-bold text-secondary">Policies and T&C</h2>
                                         <span
                                             class="material-icons-round text-primary transition-transform duration-300"
                                             :class="{'rotate-180': open === 'policies'}">expand_more</span>
@@ -574,7 +633,7 @@
                 </div>
                 <div class="lg:col-span-1 space-y-5">
                     <div class="bg-white rounded-xl shadow-float border border-gray-200 p-5 sticky top-20">
-                        <h3 class="font-bold text-lg mb-4 text-secondary">Your package summary</h3>
+                        <h3 class="font-display font-bold text-lg mb-4 text-secondary">Your package summary</h3>
 
                         <!-- Product: Hotel -->
                         <div class="mb-4 group">
@@ -674,6 +733,17 @@
                         <p class="text-xs text-text-muted mt-3 text-center">Price held for <span
                                 class="font-bold text-secondary">18:32</span></p>
                     </div>
+
+                    <!-- Points Earning Info -->
+                    <div class="bg-[#F0FDF4] rounded-xl border border-[#DCFCE7] p-5 flex items-start gap-4 shadow-sm">
+                        <div class="flex-shrink-0 mt-0.5">
+                            <span class="material-icons-round text-primary text-3xl">verified</span>
+                        </div>
+                        <p class="text-sm text-text-main font-medium leading-relaxed">
+                            Your BonusLink Account will be credited with <span class="text-primary font-bold">125,000
+                                Points</span> after you complete your trip.
+                        </p>
+                    </div>
                 </div>
             </div>
         </main>
@@ -684,6 +754,36 @@
         </footer>
     </div>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script>
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobile-menu-overlay');
+            const drawer = document.getElementById('mobile-menu-drawer');
+            const body = document.body;
+
+            if (drawer.classList.contains('-translate-x-full')) {
+                // Open
+                overlay.classList.remove('hidden');
+                // Small delay to allow display to apply before opacity transition
+                requestAnimationFrame(() => {
+                    overlay.classList.remove('opacity-0');
+                    drawer.classList.remove('-translate-x-full');
+                });
+                body.classList.add('overflow-hidden'); // Prevent background scrolling
+            } else {
+                // Close
+                overlay.classList.add('opacity-0');
+                drawer.classList.add('-translate-x-full');
+
+                // Wait for transition to finish before hiding overlay
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+
+                body.classList.remove('overflow-hidden');
+            }
+        }
+    </script>
 
     <!-- Room Details Modal -->
     <div x-show="showRoomDetails" class="relative z-[100]" aria-labelledby="modal-title" role="dialog" aria-modal="true"
@@ -708,7 +808,8 @@
                     <div
                         class="bg-white px-6 py-4 border-b border-gray-100 flex justify-between items-center sticky top-0 z-20">
                         <div>
-                            <h3 class="text-xl font-bold leading-6 text-secondary" id="modal-title">Over-Water Suite
+                            <h3 class="text-xl font-display font-bold leading-6 text-secondary" id="modal-title">
+                                Over-Water Suite
                             </h3>
                             <p class="text-sm text-text-muted mt-1">Superior luxury with panoramic ocean views</p>
                         </div>

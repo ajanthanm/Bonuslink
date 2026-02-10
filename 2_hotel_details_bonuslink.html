@@ -122,13 +122,90 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #26aae1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1e8bbd;
+        }
+
+        /* Card hover animation */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Active/Selected State for Card */
+        .card-selected {
+            border-color: #26aae1 !important;
+            box-shadow: 0 4px 14px 0 rgba(38, 170, 225, 0.15) !important;
+            background-color: #F8FAFC;
+        }
+
+        /* Image zoom on hover */
+        .image-zoom-container {
+            overflow: hidden;
+        }
+
+        .image-zoom {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .image-zoom-container:hover .image-zoom {
+            transform: scale(1.08);
+        }
+
+        /* Premium badge with subtle gradient */
+        .badge-premium {
+            background: linear-gradient(135deg, #26aae1 0%, #1e8bbd 100%);
+        }
+
+        /* Refined rating badge */
+        .rating-badge {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Gold star */
+        .star-gold {
+            color: #BC9454;
+            filter: drop-shadow(0 1px 2px rgba(188, 148, 84, 0.3));
+        }
+
+        /* Smooth expand animation */
+        .expand-section {
+            animation: slideDown 0.3s ease-out;
+        }
+
+        /* Subtle accent bar */
+        .accent-bar {
+            background: linear-gradient(180deg, #26aae1 0%, #1e8bbd 100%);
+        }
     </style>
 </head>
 
-<body class="bg-bg-surface font-sans text-text-main antialiased pb-10 text-base" x-data="{ showRoomDetails: false }">
+<body class="bg-bg-surface font-sans text-text-main antialiased pb-10 text-base"
+    x-data="{ showRoomDetails: false, showReviewsModal: false }">
     <div class="flex flex-col min-h-screen">
         <!-- Sticky Header Container -->
         <nav class="sticky top-0 z-50 bg-white border-b-2 border-gray-100 shadow-refined relative">
+
             <!-- Row 1: Brand & Profile -->
             <div
                 class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex justify-between items-center bg-white relative z-30">
@@ -139,7 +216,7 @@
                         <span class="material-icons-round text-2xl">menu</span>
                     </button>
 
-                    <img src="bonuslink_logo.png" alt="Bonuslink" class="h-10 w-auto object-contain">
+                    <img src="bonuslink_icon.png" alt="Bonuslink" class="h-10 w-auto object-contain">
 
                     <!-- Desktop Nav Links -->
                     <div class="hidden lg:flex items-center gap-6 ml-4">
@@ -181,6 +258,114 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Row 2: Context Bar -->
+            <div class="bg-gradient-to-b from-gray-50 to-white border-t border-gray-100 relative z-30">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col lg:flex-row gap-0 lg:gap-6">
+
+                        <!-- Search Context -->
+                        <div
+                            class="py-2.5 flex items-center justify-between lg:justify-start gap-4 lg:border-r-2 lg:border-gray-100 lg:pr-6 lg:w-auto border-b lg:border-b-0 border-gray-100">
+                            <div class="flex items-center gap-3 text-sm text-text-main overflow-hidden">
+                                <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                    <span class="material-icons-round text-lg text-primary">search</span>
+                                </div>
+                                <div class="flex flex-col leading-tight">
+                                    <span class="font-bold text-secondary text-base truncate">Koh Samui</span>
+                                    <span class="text-text-muted text-[10px] mt-0.5 font-medium">15-20 Jan • 2
+                                        Guests</span>
+                                </div>
+                            </div>
+                            <button onclick="toggleSection('search-widget')"
+                                class="text-[10px] font-bold uppercase text-primary bg-white border border-primary/20 px-4 py-2 rounded-lg transition-all duration-300 whitespace-nowrap hover:bg-primary hover:text-white hover:border-primary shadow-sm hover:shadow-blue"
+                                id="btn-search-modify">
+                                Modify
+                            </button>
+                        </div>
+
+                        <!-- Selected Hotel Summary -->
+                        <div id="selected-hotel-summary"
+                            class="py-2.5 flex items-center gap-4 flex-grow px-2 -mx-2 transition-all duration-300 rounded-lg">
+                            <!-- Default State -->
+                            <div id="no-hotel-selected" class="flex items-center gap-3 text-text-muted w-full">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200">
+                                    <span class="material-icons-round text-gray-400 text-lg">hotel</span>
+                                </div>
+                                <span class="font-medium text-sm"></span>
+                            </div>
+
+                            <!-- Active State (Populated by JS) -->
+                            <div id="active-hotel-display"
+                                class="hidden flex items-center justify-between w-full animate-fade-in">
+                                <div class="flex items-center gap-4">
+                                    <img id="summary-img" src=""
+                                        class="w-10 h-10 rounded-lg object-cover shadow-sm hidden sm:block">
+                                    <div class="flex flex-col">
+                                        <h4 id="summary-name"
+                                            class="text-sm font-bold text-secondary leading-tight line-clamp-1"></h4>
+                                        <div class="flex items-center gap-2 text-[10px] text-text-muted">
+                                            <span id="summary-location" class="truncate max-w-[200px]"></span>
+                                            <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                            <span id="summary-stars" class="flex text-amber text-[10px]"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-right pl-4 border-l border-gray-100 ml-auto flex-shrink-0">
+                                    <div id="summary-price" class="text-lg font-bold text-black leading-none"></div>
+                                    <div id="summary-points"
+                                        class="text-[10px] font-bold text-primary flex items-center justify-end gap-1">
+                                    </div>
+                                    <div class="text-[10px] text-text-muted">per person</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPANDABLE 1: Full Search Widget -->
+            <div id="search-widget"
+                class="hidden bg-white border-b border-gray-100 shadow-refined absolute left-0 right-0 z-20 top-full expand-section">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-4 bg-white relative">
+                    <!-- Close Button - Positioned in the top padding area -->
+                    <button onclick="toggleSection('search-widget')"
+                        class="absolute top-2 right-4 text-gray-400 hover:text-primary hover:bg-primary-light rounded-full p-1.5 transition-all duration-300 z-30 hover:scale-110">
+                        <span class="material-icons-round text-lg">close</span>
+                    </button>
+
+                    <form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div
+                            class="h-12 bg-gray-50 px-3 rounded-lg border border-gray-200 hover:border-primary/30 transition-all duration-300 focus-within:border-primary focus-within:bg-white group flex flex-col justify-center">
+                            <label
+                                class="block text-[10px] uppercase text-text-muted font-bold leading-none mb-0.5 tracking-wide group-focus-within:text-primary transition-colors">Destination</label>
+                            <input type="text" value="Koh Samui (USM)"
+                                class="w-full bg-transparent border-none p-0 text-sm font-bold text-secondary focus:ring-0 placeholder-gray-400 leading-tight">
+                        </div>
+                        <div
+                            class="h-12 bg-gray-50 px-3 rounded-lg border border-gray-200 hover:border-primary/30 transition-all duration-300 focus-within:border-primary focus-within:bg-white group flex flex-col justify-center">
+                            <label
+                                class="block text-[10px] uppercase text-text-muted font-bold leading-none mb-0.5 tracking-wide group-focus-within:text-primary transition-colors">Dates</label>
+                            <input type="text" value="15 Jan - 20 Jan"
+                                class="w-full bg-transparent border-none p-0 text-sm font-bold text-secondary focus:ring-0 placeholder-gray-400 leading-tight">
+                        </div>
+                        <div
+                            class="h-12 bg-gray-50 px-3 rounded-lg border border-gray-200 hover:border-primary/30 transition-all duration-300 focus-within:border-primary focus-within:bg-white group flex flex-col justify-center">
+                            <label
+                                class="block text-[10px] uppercase text-text-muted font-bold leading-none mb-0.5 tracking-wide group-focus-within:text-primary transition-colors">Guests</label>
+                            <select
+                                class="w-full bg-transparent border-none p-0 text-sm font-bold text-secondary focus:ring-0 cursor-pointer leading-tight">
+                                <option>2 Adults, 1 Room</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="toggleSection('search-widget')"
+                            class="h-12 bg-primary text-white font-bold uppercase text-xs rounded-lg shadow-sm hover:bg-primary-hover hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 w-full">
+                            Update Search
+                        </button>
+                    </form>
+                </div>
+            </div>
         </nav>
 
         <!-- Mobile Menu Drawer -->
@@ -192,7 +377,7 @@
             class="fixed top-0 bottom-0 left-0 w-[280px] bg-white z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
 
             <div class="p-4 border-b border-gray-100 flex items-center justify-between">
-                <img src="bonuslink_logo.png" alt="Bonuslink" class="h-8 w-auto object-contain">
+                <img src="bonuslink_icon.png" alt="Bonuslink" class="h-8 w-auto object-contain">
                 <button onclick="toggleMobileMenu()" class="text-text-muted hover:text-primary p-1">
                     <span class="material-icons-round text-xl">close</span>
                 </button>
@@ -301,9 +486,52 @@
                                 </nav>
                             </div>
 
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-5"
-                                id="room-type">
-                                <h2 class="text-xl font-display font-semibold text-secondary mb-4">Select your room</h2>
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-5" id="room-type"
+                                x-data="{ refundableOnly: false, selectedBoard: 'all' }">
+                                <h2 class="text-lg font-display font-bold text-secondary mb-4">Room Type</h2>
+                                <!-- Filter Toolbar -->
+                                <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar mb-5 pb-1">
+                                    <!-- Refundable Group -->
+                                    <div class="flex bg-gray-50 rounded-lg p-0.5 flex-shrink-0 border border-gray-100">
+                                        <button @click="refundableOnly = false"
+                                            class="px-3 py-1.5 rounded-md text-[10px] sm:text-xs font-bold transition-all leading-none"
+                                            :class="!refundableOnly ? 'bg-white text-secondary shadow-sm' : 'text-text-muted hover:text-secondary'">
+                                            All
+                                        </button>
+                                        <button @click="refundableOnly = true"
+                                            class="px-3 py-1.5 rounded-md text-[10px] sm:text-xs font-bold transition-all leading-none"
+                                            :class="refundableOnly ? 'bg-white text-secondary shadow-sm' : 'text-text-muted hover:text-secondary'">
+                                            Refundable
+                                        </button>
+                                    </div>
+
+                                    <!-- Vertical Divider -->
+                                    <div class="w-px h-6 bg-gray-200 flex-shrink-0"></div>
+
+                                    <!-- Board Type Group -->
+                                    <div class="flex bg-gray-50 rounded-lg p-0.5 border border-gray-100 min-w-max">
+                                        <button @click="selectedBoard = 'all'"
+                                            class="px-3 py-1.5 rounded-md text-[10px] sm:text-xs font-bold transition-all leading-none"
+                                            :class="selectedBoard === 'all' ? 'bg-white text-secondary shadow-sm' : 'text-text-muted hover:text-secondary'">
+                                            All
+                                        </button>
+                                        <button @click="selectedBoard = 'room_only'"
+                                            class="px-3 py-1.5 rounded-md text-[10px] sm:text-xs font-bold transition-all leading-none whitespace-nowrap"
+                                            :class="selectedBoard === 'room_only' ? 'bg-white text-secondary shadow-sm' : 'text-text-muted hover:text-secondary'">
+                                            Room Only
+                                        </button>
+                                        <button @click="selectedBoard = 'breakfast'"
+                                            class="px-3 py-1.5 rounded-md text-[10px] sm:text-xs font-bold transition-all leading-none whitespace-nowrap"
+                                            :class="selectedBoard === 'breakfast' ? 'bg-white text-secondary shadow-sm' : 'text-text-muted hover:text-secondary'">
+                                            Breakfast
+                                        </button>
+                                        <button @click="selectedBoard = 'full_board'"
+                                            class="px-3 py-1.5 rounded-md text-[10px] sm:text-xs font-bold transition-all leading-none whitespace-nowrap"
+                                            :class="selectedBoard === 'full_board' ? 'bg-white text-secondary shadow-sm' : 'text-text-muted hover:text-secondary'">
+                                            Full Board
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="space-y-6">
                                     <!-- Over-Water Suite (Fixed Layout) -->
                                     <div
@@ -332,7 +560,8 @@
                                             </div>
                                             <div class="md:w-2/3 flex flex-col">
                                                 <div class="flex justify-between items-start mb-2">
-                                                    <h3 class="text-xl font-display font-bold text-secondary">Over-Water
+                                                    <h3 class="text-xl font-display font-bold text-secondary">
+                                                        Over-Water
                                                         Suite</h3>
                                                     <span class="text-lg font-bold text-primary">+MYR 0</span>
                                                 </div>
@@ -367,16 +596,19 @@
                                                     type</p>
                                                 <div class="flex flex-wrap gap-2">
                                                     <button
+                                                        x-show="selectedBoard === 'all' || selectedBoard === 'breakfast'"
                                                         class="flex-1 text-left border border-primary bg-primary/5 text-primary px-3 py-2 rounded-lg text-xs min-w-[100px] transition-all shadow-sm">
                                                         <p class="font-bold">Breakfast</p>
                                                         <p>Included</p>
                                                     </button>
                                                     <button
+                                                        x-show="selectedBoard === 'all' || selectedBoard === 'full_board'"
                                                         class="flex-1 text-left border border-gray-200 hover:border-primary text-text-muted hover:text-primary px-3 py-2 rounded-lg text-xs min-w-[100px] transition-all">
                                                         <p class="font-bold">Full board</p>
                                                         <p>+MYR 1,320</p>
                                                     </button>
                                                     <button
+                                                        x-show="selectedBoard === 'all' || selectedBoard === 'room_only'"
                                                         class="flex-1 text-left border border-gray-200 hover:border-primary text-text-muted hover:text-primary px-3 py-2 rounded-lg text-xs min-w-[100px] transition-all">
                                                         <p class="font-bold">Room only</p>
                                                         <p>-MYR 440</p>
@@ -389,10 +621,11 @@
                                                     Rate
                                                     type</p>
                                                 <div class="space-y-2">
-                                                    <div
+                                                    <div x-show="!refundableOnly"
                                                         class="border border-gray-200 p-3 rounded-lg flex justify-between items-center hover:border-gray-300 transition-colors bg-gray-50">
                                                         <div>
-                                                            <p class="font-bold text-secondary text-xs">Non-refundable
+                                                            <p class="font-bold text-secondary text-xs">
+                                                                Non-refundable
                                                             </p>
                                                             <p class="text-xs text-text-muted">Details</p>
                                                         </div>
@@ -404,12 +637,14 @@
                                                     <div
                                                         class="border border-gray-200 p-3 rounded-lg flex justify-between items-center hover:border-gray-300 transition-colors">
                                                         <div>
-                                                            <p class="font-bold text-secondary text-xs">Fully refundable
+                                                            <p class="font-bold text-secondary text-xs">Fully
+                                                                refundable
                                                             </p>
                                                             <p class="text-xs text-green-600">Details</p>
                                                         </div>
                                                         <div class="text-right">
-                                                            <p class="font-bold text-primary text-xs mb-1">+MYR 660</p>
+                                                            <p class="font-bold text-primary text-xs mb-1">+MYR 660
+                                                            </p>
                                                             <button
                                                                 class="border border-primary text-primary px-4 py-1.5 rounded font-bold text-xs hover:bg-primary hover:text-white transition-colors">Select</button>
                                                         </div>
@@ -462,71 +697,130 @@
                                 </div>
                             </div>
 
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-5"
-                                id="reviews">
-                                <h2 class="text-xl font-display font-semibold text-secondary mb-5">Guest Reviews</h2>
-                                <div class="flex items-center mb-6 bg-gray-50 p-3 rounded-xl border border-gray-100">
-                                    <div
-                                        class="bg-primary text-white text-2xl font-bold px-3 py-2 rounded-lg shadow-sm">
-                                        8.5
-                                    </div>
-                                    <div class="ml-4">
-                                        <p class="font-bold text-lg text-secondary">Excellent</p>
-                                        <p class="text-xs text-text-muted">Based on 1,381 verified reviews</p>
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-5" id="reviews">
+                                <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-2">
+                                    <h2 class="text-lg font-display font-bold text-secondary">Guest Reviews</h2>
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="bg-primary text-white text-xs font-bold px-1.5 py-0.5 rounded">8.5</span>
+                                        <span class="text-xs text-text-muted">1,381 reviews</span>
                                     </div>
                                 </div>
-                                <div class="space-y-5">
-                                    <div class="border-b border-gray-100 pb-5">
-                                        <div class="flex items-center mb-2">
-                                            <div
-                                                class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-sm">
-                                                JD</div>
-                                            <div class="ml-3">
-                                                <p class="font-bold text-secondary text-sm">John D.</p>
-                                                <p class="text-xs text-text-muted">Reviewed 2 days ago</p>
+
+                                <div class="space-y-3">
+                                    <!-- Condensed Review 1 -->
+                                    <div class="border-b border-gray-50 pb-2 last:border-0 last:pb-0">
+                                        <div class="flex justify-between items-start mb-1">
+                                            <div class="flex items-center gap-2">
+                                                <div
+                                                    class="w-5 h-5 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-[10px]">
+                                                    JD</div>
+                                                <p class="font-bold text-secondary text-xs">John D.</p>
                                             </div>
-                                            <div class="ml-auto flex items-center">
-                                                <span class="text-primary material-icons-round text-sm">star</span>
-                                                <span class="text-primary material-icons-round text-sm">star</span>
-                                                <span class="text-primary material-icons-round text-sm">star</span>
-                                                <span class="text-primary material-icons-round text-sm">star</span>
-                                                <span class="text-gray-300 material-icons-round text-sm">star</span>
-                                            </div>
-                                        </div>
-                                        <p class="text-text-muted italic">"The overwater bungalow was incredible. Waking
-                                            up
-                                            to
-                                            the sound of the ocean was magical. The staff were very friendly and
-                                            attentive."
-                                        </p>
-                                    </div>
-                                    <div class="border-b border-gray-100 pb-6">
-                                        <div class="flex items-center mb-3">
-                                            <div
-                                                class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-sm">
-                                                AS</div>
-                                            <div class="ml-3">
-                                                <p class="font-bold text-secondary text-sm">Anna S.</p>
-                                                <p class="text-xs text-text-muted">Reviewed 1 week ago</p>
-                                            </div>
-                                            <div class="ml-auto flex items-center">
-                                                <span class="text-primary material-icons-round text-sm">star</span>
-                                                <span class="text-primary material-icons-round text-sm">star</span>
-                                                <span class="text-primary material-icons-round text-sm">star</span>
-                                                <span class="text-primary material-icons-round text-sm">star</span>
-                                                <span class="text-primary material-icons-round text-sm">star</span>
+                                            <div class="flex items-center gap-0.5">
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
                                             </div>
                                         </div>
-                                        <p class="text-text-muted italic">"Absolutely breathtaking resort. The food was
-                                            delicious, especially at the seafood restaurant. We will definitely be
-                                            back!"
+                                        <p class="text-xs text-text-muted italic line-clamp-2">"The overwater
+                                            bungalow was incredible. Waking up to the sound of the ocean was magical."
                                         </p>
                                     </div>
-                                    <div class="text-center pt-2">
-                                        <a class="text-primary font-bold hover:underline cursor-pointer">Show all 1,381
-                                            reviews</a>
+
+                                    <!-- Condensed Review 2 -->
+                                    <div class="border-b border-gray-50 pb-2 last:border-0 last:pb-0">
+                                        <div class="flex justify-between items-start mb-1">
+                                            <div class="flex items-center gap-2">
+                                                <div
+                                                    class="w-5 h-5 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-[10px]">
+                                                    AS</div>
+                                                <p class="font-bold text-secondary text-xs">Anna S.</p>
+                                            </div>
+                                            <div class="flex items-center gap-0.5">
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-text-muted italic line-clamp-2">"Absolutely
+                                            breathtaking resort. The food was delicious, especially at the seafood
+                                            restaurant."</p>
+                                    </div>
+
+                                    <!-- Condensed Review 3 -->
+                                    <div class="border-b border-gray-50 pb-2 last:border-0 last:pb-0">
+                                        <div class="flex justify-between items-start mb-1">
+                                            <div class="flex items-center gap-2">
+                                                <div
+                                                    class="w-5 h-5 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-[10px]">
+                                                    MB</div>
+                                                <p class="font-bold text-secondary text-xs">Michael B.</p>
+                                            </div>
+                                            <div class="flex items-center gap-0.5">
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-gray-300">star</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-text-muted italic line-clamp-2">"Great location for
+                                            snorkeling right off the deck. Service was a bit slow during dinner."</p>
+                                    </div>
+
+                                    <!-- Condensed Review 4 -->
+                                    <div class="border-b border-gray-50 pb-2 last:border-0 last:pb-0">
+                                        <div class="flex justify-between items-start mb-1">
+                                            <div class="flex items-center gap-2">
+                                                <div
+                                                    class="w-5 h-5 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-[10px]">
+                                                    SL</div>
+                                                <p class="font-bold text-secondary text-xs">Sarah L.</p>
+                                            </div>
+                                            <div class="flex items-center gap-0.5">
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-text-muted italic line-clamp-2">"Breakfast buffet was
+                                            amazing with so many options. The staff remembered our names every morning."
+                                        </p>
+                                    </div>
+
+                                    <!-- Condensed Review 5 -->
+                                    <div class="border-b border-gray-50 pb-2 last:border-0 last:pb-0">
+                                        <div class="flex justify-between items-start mb-1">
+                                            <div class="flex items-center gap-2">
+                                                <div
+                                                    class="w-5 h-5 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-[10px]">
+                                                    DW</div>
+                                                <p class="font-bold text-secondary text-xs">David W.</p>
+                                            </div>
+                                            <div class="flex items-center gap-0.5">
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-sm">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                                <span class="material-icons-round text-xs text-primary">star</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-text-muted italic line-clamp-2">"Room was clean and
+                                            spacious. The sunset view from the bar is a must-see."</p>
                                     </div>
                                 </div>
+
+                                <button @click="showReviewsModal = true"
+                                    class="w-full text-center text-primary font-bold text-xs hover:underline mt-2 pt-2 border-t border-gray-100">
+                                    Show all 1,381 reviews
+                                </button>
                             </div>
                             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
                                 x-data="{ open: '' }">
@@ -546,14 +840,16 @@
                                         <p class="text-text-muted text-xs">North Male Atoll, Maldives. Excellent
                                             location —
                                             rated 9.2/10! (score from 1,200 reviews)</p>
-                                        <p class="mt-2 text-xs text-secondary"><span class="font-bold">Excellent beach
+                                        <p class="mt-2 text-xs text-secondary"><span class="font-bold">Excellent
+                                                beach
                                                 nearby.</span></p>
                                     </div>
                                 </div>
                                 <div class="border-b border-gray-100" id="hotel-information">
                                     <button @click="open = open === 'amenities' ? '' : 'amenities'"
                                         class="w-full text-left p-5 md:p-6 flex justify-between items-center hover:bg-gray-50 transition-colors">
-                                        <h2 class="text-lg font-display font-bold text-secondary">Hotel Information</h2>
+                                        <h2 class="text-lg font-display font-bold text-secondary">Hotel Information
+                                        </h2>
                                         <span
                                             class="material-icons-round text-primary transition-transform duration-300"
                                             :class="{'rotate-180': open === 'amenities'}">expand_more</span>
@@ -594,7 +890,8 @@
                                 <div id="policies">
                                     <button @click="open = open === 'policies' ? '' : 'policies'"
                                         class="w-full text-left p-5 md:p-6 flex justify-between items-center hover:bg-gray-50 transition-colors">
-                                        <h2 class="text-lg font-display font-bold text-secondary">Policies and T&C</h2>
+                                        <h2 class="text-lg font-display font-bold text-secondary">Policies and T&C
+                                        </h2>
                                         <span
                                             class="material-icons-round text-primary transition-transform duration-300"
                                             :class="{'rotate-180': open === 'policies'}">expand_more</span>
@@ -604,7 +901,8 @@
                                         <div class="space-y-3">
                                             <div>
                                                 <h4 class="font-bold text-secondary mb-1">Check-in</h4>
-                                                <p>From 14:00. Guests are required to show a photo identification and
+                                                <p>From 14:00. Guests are required to show a photo identification
+                                                    and
                                                     credit
                                                     card upon check-in.</p>
                                             </div>
@@ -613,18 +911,126 @@
                                                 <p>Until 12:00.</p>
                                             </div>
                                             <div>
-                                                <h4 class="font-bold text-secondary mb-1">Cancellation/prepayment</h4>
-                                                <p>Cancellation and prepayment policies vary according to accommodation
+                                                <h4 class="font-bold text-secondary mb-1">Cancellation/prepayment
+                                                </h4>
+                                                <p>Cancellation and prepayment policies vary according to
+                                                    accommodation
                                                     type.
                                                     Please check the conditions of your required room.</p>
                                             </div>
                                             <div>
                                                 <h4 class="font-bold text-secondary mb-1">Children and beds</h4>
-                                                <p>Children of any age are welcome. Cots and extra beds are available
+                                                <p>Children of any age are welcome. Cots and extra beds are
+                                                    available
                                                     upon
                                                     request.</p>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommended Alternatives (Moved to end of left column) -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-6">
+                        <h3 class="text-lg font-display font-bold text-secondary mb-4">Recommended Alternatives</h3>
+                        <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-1">
+
+                            <!-- Alternative 1 -->
+                            <div
+                                class="min-w-[200px] w-[200px] bg-white rounded-xl border border-gray-100 shadow-sm flex-shrink-0 group overflow-hidden hover:shadow-md transition-all">
+                                <div class="relative h-28 overflow-hidden">
+                                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuActR3Yv4L8aEhz8t1OtW8gDIxOiqm4Nj4ak1LrYlyKEaZtoJKtTwWB8PqMqQXEypPxVGQxNthNStdaCIawnJALW7z0wmltHASmK8vFvUBT20NJsMCwNW_v9nuMoRAd8HPTyQtIyrgHmF0DfGTSrQjlLeuc2KNJM5QEr-2YVzbOIV7M4yNZL9xbuQ0KwOPWR9z1ObQ2jgw7nrLMvZTOe3H3u6fW7UInqo8daSH5aCVIE_x37UWOcEUsDyWNXefgaVzsTkpFXhJS7kE"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        alt="Hotel 1">
+                                    <div
+                                        class="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-1.5 py-0.5 rounded text-xs font-bold text-secondary shadow-sm flex items-center gap-0.5">
+                                        4.8 <span class="material-icons-round text-xs text-primary">star</span>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <h4 class="font-bold text-xs text-secondary truncate mb-1">Sun Siyam Olhuveli
+                                    </h4>
+                                    <div class="flex justify-between items-end">
+                                        <div>
+                                            <p class="font-bold text-sm text-secondary">MYR 1,450</p>
+                                        </div>
+                                        <button
+                                            class="bg-gray-50 hover:bg-gray-100 text-secondary text-xs font-bold px-2 py-1 rounded transition-colors border border-gray-200">View</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Alternative 2 -->
+                            <div
+                                class="min-w-[200px] w-[200px] bg-white rounded-xl border border-gray-100 shadow-sm flex-shrink-0 group overflow-hidden hover:shadow-md transition-all">
+                                <div class="relative h-28 overflow-hidden">
+                                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2cYoMdEWiWV3A1ohMw6V8KoFJpUoQ66hkAmbNEKGA2qIrlTgYR4hNizukIYiaeeGWdQxs5ok3M83aLK9WioT_cscymURz5ENf_2bRe9v69iRLtG46nKXsT3aEwVtPHYGV6uwz1IYKyIYQSE6D3WmJUS_rOdh7O94f1qhRmnW_AcbgoCvth7LU9P6HG1WoJRrCBXjyrVfJf3OpHNsFOLY9h5Wm4tAWCx9ng3ylQ_ssGnc40Jm0T2wJhi1jXVvQ78Xj6VtkgHlw7RE"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        alt="Hotel 2">
+                                    <div
+                                        class="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-1.5 py-0.5 rounded text-xs font-bold text-secondary shadow-sm flex items-center gap-0.5">
+                                        4.6 <span class="material-icons-round text-xs text-primary">star</span>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <h4 class="font-bold text-xs text-secondary truncate mb-1">Meeru Island Resort
+                                    </h4>
+                                    <div class="flex justify-between items-end">
+                                        <div>
+                                            <p class="font-bold text-sm text-secondary">MYR 980</p>
+                                        </div>
+                                        <button
+                                            class="bg-gray-50 hover:bg-gray-100 text-secondary text-xs font-bold px-2 py-1 rounded transition-colors border border-gray-200">View</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Alternative 3 -->
+                            <div
+                                class="min-w-[200px] w-[200px] bg-white rounded-xl border border-gray-100 shadow-sm flex-shrink-0 group overflow-hidden hover:shadow-md transition-all">
+                                <div class="relative h-28 overflow-hidden">
+                                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeEnBdaO_e2rZkGLeHWddV8SkEYAzVPVlNUURRm0cR9gQTTNb6wTVV3xUoJbdaXntyA_qrwPt4WRV9M2nbKcJ51G0YN3OMZdwRiikeitaHX68zugzyZV9HpC1Jth8XAM7cwcn2HpSWTxj58Kssh5_xFESljykWAxkA8-GRt4EEimnMosMdojGR0Fry6FzGONj9wyKv04XVNUkNZBA8c6pKvC87kySYPtysQQDWin4SXouX6iNx92mzcVOVRG40WaKpMHqGN6a6GZs"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        alt="Hotel 3">
+                                    <div
+                                        class="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-1.5 py-0.5 rounded text-xs font-bold text-secondary shadow-sm flex items-center gap-0.5">
+                                        4.9 <span class="material-icons-round text-xs text-primary">star</span>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <h4 class="font-bold text-xs text-secondary truncate mb-1">Kurumba Maldives</h4>
+                                    <div class="flex justify-between items-end">
+                                        <div>
+                                            <p class="font-bold text-sm text-secondary">MYR 1,850</p>
+                                        </div>
+                                        <button
+                                            class="bg-gray-50 hover:bg-gray-100 text-secondary text-xs font-bold px-2 py-1 rounded transition-colors border border-gray-200">View</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Alternative 4 -->
+                            <div
+                                class="min-w-[200px] w-[200px] bg-white rounded-xl border border-gray-100 shadow-sm flex-shrink-0 group overflow-hidden hover:shadow-md transition-all">
+                                <div class="relative h-28 overflow-hidden">
+                                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0rw0noDZs_ppQdGkbZJm31tiG67K-9kI0-ghQF7lMHDP7l99G-XYQhzGiU_b8bVcnNxTvF_hi6s8X6gyO2Ncjggsf8kYLsBXoubgEimt9iCDh8SUJszXu7xI6sHR7xhoDhj4nGDNX9cZmYOt3UUUE2uR3LGMLWAA7OD-Y5NkTv6yCovS8kAwTRlg9RavDvz8VjmlVgsLmplPlBWeyLQSgH0u4fgvmmT8IA2-WR_Fjmp_k7ew4CXOgDubZ1Wgp4hhcBxqfDCCdpSU"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        alt="Hotel 4">
+                                    <div
+                                        class="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-1.5 py-0.5 rounded text-xs font-bold text-secondary shadow-sm flex items-center gap-0.5">
+                                        4.5 <span class="material-icons-round text-xs text-primary">star</span>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <h4 class="font-bold text-xs text-secondary truncate mb-1">Bandos Maldives</h4>
+                                    <div class="flex justify-between items-end">
+                                        <div>
+                                            <p class="font-bold text-sm text-secondary">MYR 1,100</p>
+                                        </div>
+                                        <button
+                                            class="bg-gray-50 hover:bg-gray-100 text-secondary text-xs font-bold px-2 py-1 rounded transition-colors border border-gray-200">View</button>
                                     </div>
                                 </div>
                             </div>
@@ -650,7 +1056,8 @@
                                     class="w-16 h-16 object-cover rounded-lg flex-shrink-0 shadow-sm border border-gray-100"
                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0rw0noDZs_ppQdGkbZJm31tiG67K-9kI0-ghQF7lMHDP7l99G-XYQhzGiU_b8bVcnNxTvF_hi6s8X6gyO2Ncjggsf8kYLsBXoubgEimt9iCDh8SUJszXu7xI6sHR7xhoDhj4nGDNX9cZmYOt3UUUE2uR3LGMLWAA7OD-Y5NkTv6yCovS8kAwTRlg9RavDvz8VjmlVgsLmplPlBWeyLQSgH0u4fgvmmT8IA2-WR_Fjmp_k7ew4CXOgDubZ1Wgp4hhcBxqfDCCdpSU" />
                                 <div>
-                                    <h4 class="font-bold text-sm text-secondary leading-tight mb-1">Cinnamon Dhonveli
+                                    <h4 class="font-bold text-sm text-secondary leading-tight mb-1">Cinnamon
+                                        Dhonveli
                                         Maldives
                                     </h4>
                                     <p class="text-xs text-text-muted mb-2">4 nights, 2 adults</p>
@@ -744,8 +1151,11 @@
                                 Points</span> after you complete your trip.
                         </p>
                     </div>
+
+
                 </div>
             </div>
+
         </main>
         <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
             <div class="max-w-7xl mx-auto px-4 text-center text-text-muted text-xs">
@@ -965,6 +1375,247 @@
             </div>
         </div>
     </div>
+
+    <!-- Reviews Modal -->
+    <div x-show="showReviewsModal" class="relative z-[100]" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true" style="display: none;">
+        <div x-show="showReviewsModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" @click="showReviewsModal = false">
+        </div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div x-show="showReviewsModal" x-transition:enter="ease-out duration-300"
+                    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                    x-transition:leave="ease-in duration-200"
+                    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-xl border border-gray-100">
+
+                    <!-- Header -->
+                    <div class="bg-white border-b border-gray-100 sticky top-0 z-20" x-data="{ sortOption: 'newest' }">
+                        <div class="px-5 py-4 flex justify-between items-center">
+                            <div>
+                                <h3 class="text-lg font-display font-bold text-secondary">Guest Reviews</h3>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span
+                                        class="bg-primary text-white text-xs font-bold px-1.5 py-0.5 rounded">8.5</span>
+                                    <span class="text-xs text-text-muted">Excellent · 1,381 reviews</span>
+                                </div>
+                            </div>
+                            <button @click="showReviewsModal = false"
+                                class="rounded-full bg-gray-100 p-2 hover:bg-gray-200 transition-colors">
+                                <span class="material-icons-round text-gray-500">close</span>
+                            </button>
+                        </div>
+
+                        <!-- Sorting Toolbar -->
+                        <div class="px-5 pb-3 flex items-center gap-2 overflow-x-auto hide-scrollbar">
+                            <span
+                                class="text-xs font-bold text-text-muted uppercase tracking-wider flex-shrink-0 mr-1">Sort
+                                by:</span>
+                            <button @click="sortOption = 'newest'"
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all border"
+                                :class="sortOption === 'newest' ? 'bg-secondary text-white border-secondary shadow-sm' : 'bg-gray-50 text-text-muted border-transparent hover:bg-gray-100'">
+                                Newest
+                            </button>
+                            <button @click="sortOption = 'oldest'"
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all border"
+                                :class="sortOption === 'oldest' ? 'bg-secondary text-white border-secondary shadow-sm' : 'bg-gray-50 text-text-muted border-transparent hover:bg-gray-100'">
+                                Oldest
+                            </button>
+                            <button @click="sortOption = 'highest'"
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all border"
+                                :class="sortOption === 'highest' ? 'bg-secondary text-white border-secondary shadow-sm' : 'bg-gray-50 text-text-muted border-transparent hover:bg-gray-100'">
+                                Highest Rated
+                            </button>
+                            <button @click="sortOption = 'lowest'"
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all border"
+                                :class="sortOption === 'lowest' ? 'bg-secondary text-white border-secondary shadow-sm' : 'bg-gray-50 text-text-muted border-transparent hover:bg-gray-100'">
+                                Lowest Rated
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Content -->
+                    <div class="px-5 py-5 max-h-[70vh] overflow-y-auto custom-scrollbar space-y-5">
+                        <!-- Review List -->
+                        <div class="border-b border-gray-100 pb-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs">
+                                        JD</div>
+                                    <div>
+                                        <p class="font-bold text-secondary text-sm">John D.</p>
+                                        <p class="text-xs text-text-muted">Reviewed 2 days ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-primary">
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm text-gray-300">star</span>
+                                </div>
+                            </div>
+                            <h5 class="text-xs font-bold text-secondary mb-1">"Magical Experience"</h5>
+                            <p class="text-xs text-text-muted italic leading-relaxed">"The overwater bungalow was
+                                incredible. Waking up to the sound of the ocean was magical. The staff were very
+                                friendly and attentive. Food could be better but overall amazing."</p>
+                        </div>
+
+                        <div class="border-b border-gray-100 pb-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs">
+                                        AS</div>
+                                    <div>
+                                        <p class="font-bold text-secondary text-sm">Anna S.</p>
+                                        <p class="text-xs text-text-muted">Reviewed 1 week ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-primary">
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                </div>
+                            </div>
+                            <h5 class="text-xs font-bold text-secondary mb-1">"Best vacation ever!"</h5>
+                            <p class="text-xs text-text-muted italic leading-relaxed">"Absolutely breathtaking resort.
+                                The food was delicious, especially at the seafood restaurant. We will definitely be
+                                back! The spa treatments were also top notch."</p>
+                        </div>
+
+                        <div class="border-b border-gray-100 pb-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs">
+                                        MB</div>
+                                    <div>
+                                        <p class="font-bold text-secondary text-sm">Michael B.</p>
+                                        <p class="text-xs text-text-muted">Reviewed 2 weeks ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-primary">
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm text-gray-300">star</span>
+                                </div>
+                            </div>
+                            <h5 class="text-xs font-bold text-secondary mb-1">"Good Value"</h5>
+                            <p class="text-xs text-text-muted italic leading-relaxed">"Great location for snorkeling
+                                right off the deck. Service was a bit slow during dinner but the staff were polite.
+                                Would recommend for couples."</p>
+                        </div>
+
+                        <div class="border-b border-gray-100 pb-4">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs">
+                                        SL</div>
+                                    <div>
+                                        <p class="font-bold text-secondary text-sm">Sarah L.</p>
+                                        <p class="text-xs text-text-muted">Reviewed 3 weeks ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-primary">
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                </div>
+                            </div>
+                            <h5 class="text-xs font-bold text-secondary mb-1">"Family Friendly"</h5>
+                            <p class="text-xs text-text-muted italic leading-relaxed">"Breakfast buffet was amazing with
+                                so many options. The staff remembered our names every morning. Kids Club was fantastic."
+                            </p>
+                        </div>
+
+                        <div class="pb-2">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs">
+                                        DW</div>
+                                    <div>
+                                        <p class="font-bold text-secondary text-sm">David W.</p>
+                                        <p class="text-xs text-text-muted">Reviewed 1 month ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-primary">
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                    <span class="material-icons-round text-sm">star</span>
+                                </div>
+                            </div>
+                            <h5 class="text-xs font-bold text-secondary mb-1">"Stunning Views"</h5>
+                            <p class="text-xs text-text-muted italic leading-relaxed">"Room was clean and spacious. The
+                                sunset view from the bar is a must-see. Transfer from airport was seamless and well
+                                organized."</p>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="bg-gray-50 px-5 py-4 border-t border-gray-100 sm:flex sm:flex-row-reverse gap-3">
+                        <button type="button" @click="showReviewsModal = false"
+                            class="w-full inline-flex justify-center rounded-lg border border-transparent bg-primary px-4 py-2 text-base font-bold text-white shadow-sm hover:bg-primary-hover focus:outline-none sm:w-auto sm:text-sm transition-colors">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            if (section) {
+                section.classList.toggle('hidden');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobile-menu-overlay');
+            const drawer = document.getElementById('mobile-menu-drawer');
+            const body = document.body;
+
+            if (drawer.classList.contains('-translate-x-full')) {
+                // Open
+                overlay.classList.remove('hidden');
+                // Small delay to allow display to apply before opacity transition
+                requestAnimationFrame(() => {
+                    overlay.classList.remove('opacity-0');
+                    drawer.classList.remove('-translate-x-full');
+                });
+                body.classList.add('overflow-hidden'); // Prevent background scrolling
+            } else {
+                // Close
+                overlay.classList.add('opacity-0');
+                drawer.classList.add('-translate-x-full');
+
+                // Wait for transition to finish before hiding overlay
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+
+                body.classList.remove('overflow-hidden');
+            }
+        }
+    </script>
 </body>
 
 </html>
